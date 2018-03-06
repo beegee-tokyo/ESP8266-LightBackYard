@@ -6,18 +6,6 @@
 // #define speakerPin 15
 #define speakerPin 12
 
-/**********************************************
-When doing breadboard test, enable this define
-***********************************************/
-//#define BREADBOARD
-
-// #ifdef BREADBOARD
-// 	#define DEVICE_ID "lyb" // ID for security in front yard
-// 	#define OTA_HOST "lyb" // Host name for OTA updates
-// #else
-// 	#define DEVICE_ID "ly1" // ID for security in front yard
-// 	#define OTA_HOST "ly1" // Host name for OTA updates
-// #endif
 /** Hostname & AP name created from device function & 1. and 4. to 6. part of MAC address */
 extern char hostApName[];
 /** Debug name created from last part of hostname */

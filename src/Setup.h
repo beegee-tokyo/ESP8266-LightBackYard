@@ -8,14 +8,12 @@
 #include <WiFiUdp.h>
 #include <WiFiClient.h>
 #include <Ticker.h>
-#include <Wire.h>
 #include <pgmspace.h>
-#include <ArduinoJson.h>
-#include <FS.h>
 #include <TimeLib.h>
-
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
+
+#include <ArduinoJson.h>
 #include <WiFiManager.h>
 
 /* Common private libraries */

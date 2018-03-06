@@ -13,12 +13,6 @@ WiFiServer tcpServer(tcpComPort);
 /** mDNS and Access point name */
 char apName[] = "ESP8266 Light Control xxxxxx";
 
-// /** IP address of this module */
-// #ifdef BREADBOARD
-// 	IPAddress ipAddr = ipSpare;
-// #else
-// 	IPAddress ipAddr = ipByardLight;
-// #endif
 /** Hostname & AP name created from device function & 1. and 4. to 6. part of MAC address */
 char hostApName[] = "MHC-Lig-xxxxxxxx";
 /** Debug name created from last part of hostname */

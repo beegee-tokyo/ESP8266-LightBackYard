@@ -88,6 +88,24 @@ void setup() {
 	Serial.println(DEVICE_ID);
 	Serial.println("====================");
 
+	// Check if SPIFFS file system is initialized.
+	if (!spiffsOK)
+	{
+		sendDebug("Failed to mount file system", OTA_HOST);
+	}
+
+	// Try to get last status & last reboot reason from status.txt
+	Serial.println("====================");
+	if (!readStatus()) {
+		sendDebug("No status file found", OTA_HOST);
+		writeRebootReason("Unknown");
+		lastRebootReason = "Unknown";
+	} else {
+		Serial.println("Last reboot because: " + rebootReason);
+		lastRebootReason = rebootReason;
+	}
+	Serial.println("====================");
+
 	// Check if the configuration data has changed
 	if (shouldSaveConfig) {
 		if (wmDevLoc.getValueLength() != 0) {
@@ -120,30 +138,6 @@ void setup() {
 
 	// Start heart beat sending every 1 minute
 	heartBeatTimer.attach(60, triggerHeartBeat);
-
-	// Initialize file system.
-	if (!SPIFFS.begin())
-	{
-		sendDebug("Failed to mount file system", OTA_HOST);
-		return;
-	}
-
-	// Try to get last status & last reboot reason from status.txt
-	Serial.println("====================");
-	if (!readStatus()) {
-		sendDebug("No status file found, try to format the SPIFFS", OTA_HOST);
-		if (SPIFFS.format()){
-			sendDebug("SPIFFS formatted", OTA_HOST);
-		} else {
-			sendDebug("SPIFFS format failed", OTA_HOST);
-		}
-		writeRebootReason("Unknown");
-		lastRebootReason = "No status file found";
-	} else {
-		Serial.println("Last reboot because: " + rebootReason);
-		lastRebootReason = rebootReason;
-	}
-	Serial.println("====================");
 
 	// Send Lights restart message
 	sendDebug("Restarting", OTA_HOST);

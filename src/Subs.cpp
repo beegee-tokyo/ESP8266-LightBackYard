@@ -30,17 +30,17 @@ void createStatus(JsonObject& root, boolean makeShort) {
 	// {"de":ly1,"lo":0/1,"bo":0/1,
 	//			"rs":-100...+100,"re":rebootReason,"bu":"Build version","dt":"currentDate","db":0/1}
 
-	root["de"] = DEVICE_ID; //root["device"] = DEVICE_ID;
+	root["de"] = DEVICE_ID;
 	if (digitalRead(relayPort) == HIGH) {
-		root["lo"] = 1; //root["alarm"] = 1;
+		root["lo"] = 1;
 	} else {
-		root["lo"] = 0; //root["alarm"] = 0;
+		root["lo"] = 0;
 	}
 	if (!makeShort) {
 		if (inSetup) {
-			root["bo"] = 1; //root["boot"] = 1;
+			root["bo"] = 1;
 		} else {
-			root["bo"] = 0; //root["boot"] = 0;
+			root["bo"] = 0;
 		}
 
 		root["rs"] = getRSSI(); //root["rssi"] = getRSSI();
