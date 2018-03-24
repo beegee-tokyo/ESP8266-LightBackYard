@@ -25,6 +25,9 @@ void loop() {
 	if (connStatus == CON_GOTIP) {
 		wdt_reset();
 		if (notInitialized) {
+			// Initialize OTA
+			initOTA();
+
 			String debugMsg = "Reconnected to " + WiFi.SSID();
 			debugMsg += " " + digitalClockDisplay();
 			sendRpiDebug(debugMsg, OTA_HOST);
@@ -44,8 +47,6 @@ void loop() {
 			tcpServer.begin();
 			// Send Security restart/reconnect message
 			sendAlarm(true);
-			// Initialize OTA
-			initOTA();
 			notInitialized = false;
 		}
 		// Here comes some tasks that make only sense if we are connected
