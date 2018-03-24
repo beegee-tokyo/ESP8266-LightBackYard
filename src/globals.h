@@ -2,9 +2,6 @@
 
 /** Output to activate Relay */
 #define relayPort 5
-/** Output to loudspeaker or piezo */
-// #define speakerPin 15
-#define speakerPin 12
 
 /** Hostname & AP name created from device function & 1. and 4. to 6. part of MAC address */
 extern char hostApName[];
@@ -19,24 +16,20 @@ extern IPAddress ipAddr;
 extern const char compileDate [];
 /** WiFiServer class to create TCP socket server on port tcpComPort */
 extern WiFiServer tcpServer;
-/** IP address of this module */
-extern IPAddress ipAddr;
-/** mDNS and Access point name */
-extern char apName[];
+
 /** Timer to switch off the relay */
 extern Ticker relayOffTimer;
 
 /** Flag if heart beat was triggered */
 extern boolean heartBeatTriggered;
+/** Timer for heart beat */
+extern Ticker heartBeatTimer;
 /** Flag if panic button was pressed */
 extern boolean panicOn;
 /** Flag for debugging */
 extern bool debugOn;
 /** Relay on delay time in seconds */
 extern int onTime;
-
-/** Flag for WiFi connection */
-extern bool wmIsConnected;
 /** Bug capture trial year of last good NTP time received */
 extern int lastKnownYear;
 
@@ -44,13 +37,6 @@ extern int lastKnownYear;
 extern boolean lightOffTriggered;
 /** Flag for manual switch on activity */
 extern boolean lightOnByUser;
-
-/** Flag for boot status */
-extern boolean inSetup;
-/** String with reboot reason */
-extern String rebootReason;
-/** String with last known reboot reason */
-extern String lastRebootReason;
 
 /** Flag for OTA update */
 extern bool otaRunning;

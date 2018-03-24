@@ -27,8 +27,8 @@ void relayOff() {
 void createStatus(JsonObject& root, boolean makeShort) {
 	// Create status
 	// structure is:
-	// {"de":ly1,"lo":0/1,"bo":0/1,
-	//			"rs":-100...+100,"re":rebootReason,"bu":"Build version","dt":"currentDate","db":0/1}
+	// {"de":ly1,"lo":0/1,
+	//			"rs":-100...+100,"bu":"Build version","dt":"currentDate","db":0/1}
 
 	root["de"] = DEVICE_ID;
 	if (digitalRead(relayPort) == HIGH) {
@@ -36,18 +36,11 @@ void createStatus(JsonObject& root, boolean makeShort) {
 	} else {
 		root["lo"] = 0;
 	}
+
 	if (!makeShort) {
-		if (inSetup) {
-			root["bo"] = 1;
-		} else {
-			root["bo"] = 0;
-		}
+		root["rs"] = WiFi.RSSI();
 
-		root["rs"] = getRSSI(); //root["rssi"] = getRSSI();
-
-		root["bu"] = compileDate; //root["build"] = compileDate;
-
-		root["re"] = lastRebootReason; //root["reboot"] = lastRebootReason;
+		root["bu"] = compileDate;
 
 		root["dt"] = digitalClockDisplay();
 
@@ -99,35 +92,6 @@ bool writeStatus() {
 }
 
 /**
- * Write reboot reason to file
- *
- * @param message
- *			Reboot reason as string
- * @return <code>boolean</code>
- *			True if reboot reason was saved
- *			False if file error occured
- */
-bool writeRebootReason(String message) {
-	// Write current status to file
-	writeStatus();
-	// Now append reboot reason to file
-	// Open config file for writing.
-	/** Pointer to file */
-	File statusFile = SPIFFS.open("/status.txt", "a");
-	if (!statusFile)
-	{
-		if (debugOn) {
-			sendDebug("Failed to open status.txt for writing", OTA_HOST);
-		}
-		return false;
-	}
-	// Save reboot reason to file
-	statusFile.println(message);
-	statusFile.close();
-	return true;
-}
-
-/**
  * Reads current status from status.txt
  * global variables are updated from the content
  *
@@ -136,7 +100,7 @@ bool writeRebootReason(String message) {
  *			False if file error occured
  */
 bool readStatus() {
-	// open file for reading.
+	// open file for reading or create it if it doesn't exist.
 	/** Pointer to file */
 	File statusFile = SPIFFS.open("/status.txt", "r");
 	if (!statusFile)
@@ -168,14 +132,6 @@ bool readStatus() {
 		{
 			pos = content.indexOf("\r");
 		}
-	}
-
-	// If there is no second line: Reboot reason is missing.
-	if (pos != -1)
-	{
-		rebootReason = content.substring(pos + le);
-	} else {
-		rebootReason = "Not saved";
 	}
 
 	// Create current status as from file as JSON

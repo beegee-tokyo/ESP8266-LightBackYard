@@ -41,7 +41,6 @@ void sendAlarm(boolean makeShort) {
 		if (debugOn) {
 			sendDebug("UDP write multicast failed", OTA_HOST);
 		}
-		// wmIsConnected = false;
 		return;
 	}
 	String broadCast;
@@ -55,6 +54,9 @@ void sendAlarm(boolean makeShort) {
 	udpClientServer.endPacket();
 	udpClientServer.stop();
 
+	if (debugOn) {
+		sendDebug(broadCast, OTA_HOST);
+	}
 	comLedFlashStop();
 }
 
@@ -66,7 +68,6 @@ void sendAlarm(boolean makeShort) {
  *		l=0	to switch off the lights
  *		l=1	to switch on the lights
  *		b to switch on the lights for 5 minutes
- *		r	to reset saved WiFi configuration
  *		d	to enable TCP debug
  *		x to reset the device
  *		y=YYYY,MM,DD,HH,mm,ss to set time and date
@@ -168,15 +169,6 @@ void socketServer(WiFiClient tcpClient) {
 			sendDebug("Debug over TCP is off", OTA_HOST);
 		}
 		writeStatus();
-		return;
-	// Delete saved WiFi configuration
-	} else if (req.substring(0, 1) == "r") {
-		sendDebug("Delete WiFi credentials and reset device", OTA_HOST);
-		wifiManager.resetSettings();
-		// Reset the ESP
-		delay(3000);
-		ESP.reset();
-		delay(5000);
 		return;
 		// Date/time received
 	} else if (req.substring(0, 2) == "y=") {

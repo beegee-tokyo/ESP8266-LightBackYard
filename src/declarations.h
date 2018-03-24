@@ -10,9 +10,6 @@ const char compileDate[] = __DATE__ " " __TIME__;
 /** WiFiServer class to create TCP socket server on port tcpComPort */
 WiFiServer tcpServer(tcpComPort);
 
-/** mDNS and Access point name */
-char apName[] = "ESP8266 Light Control xxxxxx";
-
 /** Hostname & AP name created from device function & 1. and 4. to 6. part of MAC address */
 char hostApName[] = "MHC-Lig-xxxxxxxx";
 /** Debug name created from last part of hostname */
@@ -25,6 +22,8 @@ Ticker relayOffTimer;
 
 /** Flag if heart beat was triggered */
 boolean heartBeatTriggered = false;
+/** Timer for heart beat */
+Ticker heartBeatTimer;
 /** Flag if panic button was pressed */
 boolean panicOn = false;
 
@@ -37,13 +36,6 @@ boolean lightOnByUser = false;
 int onTime = 300;
 /** Bug capture trial year of last good NTP time received */
 int lastKnownYear = 0;
-
-/** Flag for boot status */
-boolean inSetup = true;
-/** String with reboot reason */
-String rebootReason = "unknown";
-/** String with last known reboot reason */
-String lastRebootReason = "unknown";
 
 /** Flag for OTA update */
 bool otaRunning = false;
